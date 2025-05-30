@@ -1,7 +1,7 @@
 // ==UserScript==
 // @name         pibbEnhanced
 // @namespace    http://tampermonkey.net/
-// @version      1.2.1
+// @version      1.2.2
 // @description  Refines SCUPI Blackboard module to display assignments. Ensures only the assignment list is scrollable, includes timeout/error feedback, and automatically reloads if page content overwrites script output.
 // @author       Gilbert Chen
 // @match        https://pibb.scu.edu.cn/webapps/portal/execute/*
@@ -13,7 +13,7 @@
 (function () {
     'use strict';
 
-    console.log('pibbEnhanced script started (v1.2.1).');
+    console.log('pibbEnhanced script started (v1.2.2).');
 
     const SCRIPT_CONTENT_ID = 'userscript-assignment-content';
     let isMainRunning = false;
@@ -220,9 +220,6 @@
                     newTitleSpan.className = 'moduleTitle';
                     newTitleSpan.textContent = 'Assignment Deadline';
                     headerElement.prepend(newTitleSpan);
-                }
-                if (headerElement.nextElementSibling && headerElement.nextElementSibling.classList.contains('collapsible')) {
-                    headerElement.style.marginBottom = '10px';
                 }
             } else {
                 console.warn('Original h2.dragHandle.clearfix header not found.');

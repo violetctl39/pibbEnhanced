@@ -1,7 +1,7 @@
 // ==UserScript==
 // @name         pibbEnhanced
 // @namespace    http://tampermonkey.net/
-// @version      1.3.3
+// @version      1.3.4
 // @description  Refines SCUPI Blackboard module to display assignments with database storage, manual completion tracking, and recovery features. Force refresh preserves user completion status while updating assignment cache. Ensures only the assignment list is scrollable, includes timeout/error feedback, and automatically reloads if page content overwrites script output.
 // @author       violetctl39
 // @match        https://pibb.scu.edu.cn/webapps/portal/execute/*
@@ -17,9 +17,8 @@
 (function () {
     'use strict';
 
-    console.log('pibbEnhanced script started (v1.3.3).');
+    console.log('pibbEnhanced script started (v1.3.4).');
 
-    // 火狐浏览器兼容性检查
     function checkFirefoxCompatibility() {
         const isFirefox = navigator.userAgent.includes('Firefox');
         console.log('Browser detection:', {
@@ -30,7 +29,6 @@
 
         if (isFirefox) {
             console.log('Firefox detected - using GM_xmlhttpRequest for network requests');
-            // 检查必要的 GM 功能是否可用
             if (typeof GM_xmlhttpRequest === 'undefined') {
                 console.error('GM_xmlhttpRequest is not available! Please check Tampermonkey settings.');
                 return false;
@@ -39,7 +37,6 @@
         return true;
     }
 
-    // 执行兼容性检查
     if (!checkFirefoxCompatibility()) {
         alert('pibbEnhanced: 检测到兼容性问题，请检查 Tampermonkey 设置');
     }
@@ -55,14 +52,12 @@
         LAST_UPDATE: 'pibbEnhanced_lastUpdate'
     };
 
-    // 中文字符安全处理函数
     function sanitizeUnicodeString(str) {
         if (!str || typeof str !== 'string') return '';
 
         try {
-            // 移除可能导致问题的控制字符
             return str.replace(/[\u0000-\u001F\u007F-\u009F]/g, '')
-                .replace(/[\uFEFF]/g, '') // 移除 BOM
+                .replace(/[\uFEFF]/g, '') 
                 .trim();
         } catch (error) {
             console.warn('String sanitization failed:', error);
@@ -152,14 +147,12 @@
         }
     } class Assignment {
         constructor(title, calendarName, end, courseLink = null) {
-            // 使用安全的字符串处理
             this.title = sanitizeUnicodeString(title) || 'Untitled Assignment';
             this.calendarName = sanitizeUnicodeString(calendarName) || 'Unknown Course';
             this.end = new Date(end);
             this.courseLink = courseLink;
             this.id = this.generateId();
 
-            // 添加调试信息
             if (title !== this.title || calendarName !== this.calendarName) {
                 console.log('Unicode characters sanitized:', {
                     originalTitle: title,
@@ -169,9 +162,8 @@
                 });
             }
         } generateId() {
-            // 创建基础字符串，确保内容安全
-            const safeTitle = this.title.substring(0, 50); // 限制长度
-            const safeCalendarName = this.calendarName.substring(0, 30); // 限制长度
+            const safeTitle = this.title.substring(0, 50);
+            const safeCalendarName = this.calendarName.substring(0, 30);
             const baseString = `${safeTitle}_${safeCalendarName}_${this.end.getTime()}`;
 
             console.log('Generating ID for assignment with Chinese characters:', {
@@ -180,12 +172,11 @@
                 baseStringLength: baseString.length
             });
 
-            // 方法1: 使用简单而可靠的哈希方法 (优先选择，避免 btoa 问题)
             try {
-                let hash = 5381; // 使用 djb2 哈希算法，对 Unicode 更友好
+                let hash = 5381;
                 for (let i = 0; i < baseString.length; i++) {
                     const char = baseString.charCodeAt(i);
-                    hash = ((hash << 5) + hash) + char; // hash * 33 + char
+                    hash = ((hash << 5) + hash) + char;
                 }
                 const hashResult = Math.abs(hash).toString(36).substring(0, 16);
                 console.log('Assignment ID generated using djb2 hash:', hashResult);
@@ -194,7 +185,6 @@
                 console.warn('Hash method failed:', hashError);
             }
 
-            // 方法2: 备用的时间戳 + 随机数方案
             try {
                 const timestamp = this.end.getTime().toString(36);
                 const random = Math.random().toString(36).substring(2, 8);
@@ -526,26 +516,36 @@
                 headerElement.appendChild(headerButtonsContainer);
             } else {
                 console.warn('Original h2.dragHandle.clearfix header not found.');
-            }
-
-            let contentHostElement;
+            } let contentHostElement;
             let listContainer;
             const collapsibleDiv = targetModule.querySelector('div.collapsible#On_Demand_Help_Tools');
 
             if (collapsibleDiv) {
                 contentHostElement = collapsibleDiv;
                 contentHostElement.innerHTML = '';
-                const innerDivForList = contentHostElement.querySelector('#div_27_1');
-                if (innerDivForList) {
-                    listContainer = innerDivForList;
-                } else {
-                    listContainer = contentHostElement;
-                    console.warn('#div_27_1 not found within .collapsible. Using .collapsible itself as list container.');
+
+                let innerDivForList = contentHostElement.querySelector('#div_27_1');
+                if (!innerDivForList) {
+                    innerDivForList = document.createElement('div');
+                    innerDivForList.id = 'div_27_1';
+                    innerDivForList.style.cssText = 'padding: 10px; min-height: 100px;';
+                    contentHostElement.appendChild(innerDivForList);
+                    console.log('Created missing #div_27_1 element within .collapsible container.');
                 }
+                listContainer = innerDivForList;
             } else {
-                console.warn('div.collapsible#On_Demand_Help_Tools not found. Creating a new content host div.');
+                console.log('div.collapsible#On_Demand_Help_Tools not found. Creating a new content host structure.');
                 contentHostElement = document.createElement('div');
-                listContainer = contentHostElement;
+                contentHostElement.className = 'collapsible';
+                contentHostElement.id = 'On_Demand_Help_Tools';
+                contentHostElement.style.cssText = 'border: 1px solid #ddd; border-radius: 4px; margin: 10px 0; background: #fff;';
+
+                const innerDiv = document.createElement('div');
+                innerDiv.id = 'div_27_1';
+                innerDiv.style.cssText = 'padding: 10px; min-height: 100px;';
+                contentHostElement.appendChild(innerDiv);
+                listContainer = innerDiv;
+
                 const refNodeForInsertion = headerElement || targetModule.querySelector('div.edit_controls');
                 if (refNodeForInsertion && refNodeForInsertion.parentElement === targetModule) {
                     refNodeForInsertion.after(contentHostElement);
@@ -636,7 +636,6 @@
             const todayDay = now.getDate();
 
             const assignmentsToDisplay = allAssignments.filter(assignment => {
-                // Skip if user marked as completed
                 if (completedAssignments.has(assignment.id)) {
                     return false;
                 }
@@ -709,7 +708,7 @@
                 if (headerElement) {
                     headerHeight = headerElement.offsetHeight;
                 }
-                assignmentListWrapper.style.maxHeight = (availableHeight - headerHeight - 20) + 'px'; // Account for padding
+                assignmentListWrapper.style.maxHeight = (availableHeight - headerHeight - 20) + 'px';
 
                 const list = document.createElement('ul');
                 list.style.listStyleType = 'none';
@@ -746,7 +745,7 @@
                     endEl.textContent = `Due: ${formatDateTime(assignment.end)}`;
                     endEl.style.fontSize = '0.9em';
                     endEl.style.fontWeight = 'bold';
-                    endEl.style.color = '#555';                    // Create countdown and button container on same line
+                    endEl.style.color = '#555';
                     const countdownButtonContainer = document.createElement('div');
                     countdownButtonContainer.style.display = 'flex';
                     countdownButtonContainer.style.justifyContent = 'space-between';

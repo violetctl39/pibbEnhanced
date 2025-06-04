@@ -2,6 +2,7 @@
 
 [![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg)](https://opensource.org/licenses/MIT)
 [![Version](https://img.shields.io/badge/Version-1.3.0-blue.svg)](https://github.com/violetctl39/pibbEnhanced)
+[![GreasyFork](https://img.shields.io/badge/GreasyFork-Install-brightgreen.svg)](https://greasyfork.org/zh-CN/scripts/537754-pibbenhanced)
 [![UserScript](https://img.shields.io/badge/UserScript-Tampermonkey%20%7C%20Violentmonkey-orange.svg)](https://www.tampermonkey.net/)
 [![GitHub Stars](https://img.shields.io/github/stars/violetctl39/pibbEnhanced?style=social)](https://github.com/violetctl39/pibbEnhanced)
 
@@ -25,18 +26,26 @@
 
 ## 📦 Installation | 安装方法
 
-### 🚀 Method 1: Install from GitHub (Recommended) | 方法一：从 GitHub 安装（推荐）
+### 🚀 Method 1: Install from GreasyFork (Recommended) | 方法一：从 GreasyFork 安装（推荐）
+1. Install [Tampermonkey](https://www.tampermonkey.net/) browser extension | 安装 Tampermonkey 浏览器扩展
+2. Click to install: [📥 Install from GreasyFork](https://greasyfork.org/zh-CN/scripts/537754-pibbenhanced) | 点击从 GreasyFork 安装脚本
+3. GreasyFork will automatically redirect to Tampermonkey for installation | GreasyFork 会自动重定向到 Tampermonkey 进行安装
+
+### 🔧 Method 2: Install from GitHub | 方法二：从 GitHub 安装
 1. Install [Tampermonkey](https://www.tampermonkey.net/) browser extension | 安装 Tampermonkey 浏览器扩展
 2. Click to install: [📥 Install Script](https://github.com/violetctl39/pibbEnhanced/raw/main/pibbEnhanced.js) | 点击安装脚本
 3. Tampermonkey will automatically detect and prompt to install | Tampermonkey 会自动检测并提示安装
 
-### 🔧 Method 2: Manual Installation | 方法二：手动安装
+### 🛠️ Method 3: Manual Installation | 方法三：手动安装
+1. Install [Tampermonkey](https://www.tampermonkey.net/) browser extension | 安装 Tampermonkey 浏览器扩展
+### 🛠️ Method 3: Manual Installation | 方法三：手动安装
 1. Install [Tampermonkey](https://www.tampermonkey.net/) browser extension | 安装 Tampermonkey 浏览器扩展
 2. Copy the [script source code](https://github.com/violetctl39/pibbEnhanced/raw/main/pibbEnhanced.js) | 复制脚本源码
 3. Create a new script in Tampermonkey dashboard and paste the code | 在 Tampermonkey 管理页面创建新脚本并粘贴代码
 
-### 🌐 Method 3: GreasyFork (Coming Soon) | 方法三：GreasyFork（即将推出）
-- Will be available on GreasyFork after review | 审核通过后将在 GreasyFork 上提供
+### 🌐 Alternative: Violentmonkey Support | 替代方案：Violentmonkey 支持
+- Both [Tampermonkey](https://www.tampermonkey.net/) and [Violentmonkey](https://violentmonkey.github.io/) are supported | 同时支持 Tampermonkey 和 Violentmonkey
+- Installation methods work with both userscript managers | 安装方法适用于两种用户脚本管理器
 
 ## 🔧 Usage | 使用方法
 
@@ -155,6 +164,9 @@ A: The script fetches fresh data on each page load and provides force refresh op
 **Q: What happens if I mark an assignment as complete by mistake? | 如果我误标记作业为完成怎么办？**  
 A: Use the recovery feature to restore mistakenly marked completed assignments back to the active list. | 使用恢复功能将误标记完成的作业恢复到活动列表。
 
+**Q: Where can I find the latest version? | 在哪里可以找到最新版本？**  
+A: Latest version is available on both [GreasyFork](https://greasyfork.org/zh-CN/scripts/537754-pibbenhanced) and [GitHub](https://github.com/violetctl39/pibbEnhanced). | 最新版本在 GreasyFork 和 GitHub 上都可以找到。
+
 **Q: Does the script affect Blackboard's original functionality? | 脚本会影响Blackboard的原始功能吗？**  
 A: No, it only replaces one module display. All other Blackboard features remain unchanged. | 不会，它只替换一个模块显示。所有其他Blackboard功能保持不变。
 
@@ -170,6 +182,7 @@ This project is licensed under the [MIT License](LICENSE) | 本项目采用 [MIT
 - **Performance** | **性能**: Real-time updates, minimal performance impact
 - **File Size** | **文件大小**: ~25KB (optimized and commented)
 - **Dependencies** | **依赖**: Tampermonkey API, modern browser ES6+ support
+- **GreasyFork ID** | **GreasyFork ID**: 537754
 
 ## 📋 Changelog | 更新日志
 
@@ -191,6 +204,7 @@ Issues and Pull Requests are welcome! | 欢迎提交 Issue 和 Pull Request！
 
 ## 📧 Support | 支持
 
+- **GreasyFork**: [Script Page & Reviews](https://greasyfork.org/zh-CN/scripts/537754-pibbenhanced) | 脚本页面和评价
 - **GitHub Issues**: [Report problems](https://github.com/violetctl39/pibbEnhanced/issues) | 报告问题
 - **Author**: [violetctl39](https://github.com/violetctl39) | 作者
 - **Email**: Contact via GitHub | 通过 GitHub 联系
@@ -204,12 +218,17 @@ If this project helps you, please give it a ⭐️! | 如果这个项目对你�
 **Version | 版本**: 1.3.0  
 **Author | 作者**: [violetctl39](https://github.com/violetctl39)  
 **License | 许可证**: MIT  
+**GreasyFork**: [Install Script](https://greasyfork.org/zh-CN/scripts/537754-pibbenhanced) | [安装脚本](https://greasyfork.org/zh-CN/scripts/537754-pibbenhanced)  
 **Compatible with | 适用于**: SCUPI Blackboard Portal System | 四川大学匹兹堡学院 Blackboard 门户系统
 
 ---
 
 <div align="center">
 
-**Made with ❤️ by violetctl39**
+**Made with ❤️ for SCUPI students**
+
+**为SCUPI学生用心制作**
+
+[![Install on GreasyFork](https://img.shields.io/badge/Install%20on-GreasyFork-green?style=for-the-badge&logo=javascript)](https://greasyfork.org/zh-CN/scripts/537754-pibbenhanced)
 
 </div>

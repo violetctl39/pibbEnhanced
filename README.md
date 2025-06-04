@@ -1,7 +1,7 @@
 # pibbEnhanced - SCUPI Blackboard Assignment Enhancer
 
 [![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg)](https://opensource.org/licenses/MIT)
-[![Version](https://img.shields.io/badge/Version-1.3.3-blue.svg)](https://github.com/violetctl39/pibbEnhanced)
+[![Version](https://img.shields.io/badge/Version-1.3.4-blue.svg)](https://github.com/violetctl39/pibbEnhanced)
 [![GreasyFork](https://img.shields.io/badge/GreasyFork-Install-brightgreen.svg)](https://greasyfork.org/zh-CN/scripts/537754-pibbenhanced)
 [![UserScript](https://img.shields.io/badge/UserScript-Tampermonkey%20%7C%20Violentmonkey-orange.svg)](https://www.tampermonkey.net/)
 [![GitHub Stars](https://img.shields.io/github/stars/violetctl39/pibbEnhanced?style=social)](https://github.com/violetctl39/pibbEnhanced)
@@ -191,7 +191,13 @@ This project is licensed under the [MIT License](LICENSE) | 本项目采用 [MIT
 
 ## 📋 Changelog | 更新日志
 
-### Version 1.3.3 (Latest) | 版本 1.3.3（最新）
+### Version 1.3.4 (Latest) | 版本 1.3.4（最新）
+- 🏗️ **DOM Structure Enhancement**: Fixed DOM structure warnings by ensuring proper #div_27_1 element creation and handling | DOM结构增强：通过确保正确的#div_27_1元素创建和处理修复DOM结构警告
+- 🔧 **Improved Element Detection**: Enhanced collapsible container detection with automatic element creation fallbacks | 改进元素检测：增强可折叠容器检测，自动元素创建备选方案
+- 🛡️ **Better Error Prevention**: Eliminated console warnings and improved module initialization reliability | 更好的错误预防：消除控制台警告，提高模块初始化可靠性
+- 🎯 **Consistent Module Structure**: Ensures proper DOM hierarchy for optimal script functionality | 一致的模块结构：确保正确的DOM层次结构以实现最佳脚本功能
+
+### Version 1.3.3 | 版本 1.3.3
 - 🦊 **Firefox DOMException Fix**: Fixed Unicode character handling in ID generation to prevent DOMException errors | 火狐DOMException修复：修复ID生成中的Unicode字符处理，防止DOMException错误
 - 🔧 **Improved btoa() Compatibility**: Added fallback hash method for browsers with strict Unicode handling | 改进btoa()兼容性：为严格Unicode处理的浏览器添加备用哈希方法
 - 🌐 **Cross-Origin Permission Optimization**: Removed problematic wildcard connect permission | 跨域权限优化：移除有问题的通配符连接权限
@@ -235,7 +241,7 @@ If this project helps you, please give it a ⭐️! | 如果这个项目对你�
 
 ---
 
-**Version | 版本**: 1.3.3  
+**Version | 版本**: 1.3.4  
 **Author | 作者**: [violetctl39](https://github.com/violetctl39)  
 **License | 许可证**: MIT  
 **GreasyFork**: [Install Script](https://greasyfork.org/zh-CN/scripts/537754-pibbenhanced) | [安装脚本](https://greasyfork.org/zh-CN/scripts/537754-pibbenhanced)  

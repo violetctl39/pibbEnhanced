@@ -1,7 +1,7 @@
 // ==UserScript==
 // @name         pibbEnhanced
 // @namespace    http://tampermonkey.net/
-// @version      1.3.2
+// @version      1.3.3
 // @description  Refines SCUPI Blackboard module to display assignments with database storage, manual completion tracking, and recovery features. Force refresh preserves user completion status while updating assignment cache. Ensures only the assignment list is scrollable, includes timeout/error feedback, and automatically reloads if page content overwrites script output.
 // @author       violetctl39
 // @match        https://pibb.scu.edu.cn/webapps/portal/execute/*
@@ -10,7 +10,6 @@
 // @grant        GM_deleteValue
 // @grant        GM_xmlhttpRequest
 // @connect      pibb.scu.edu.cn
-// @connect      *
 // @run-at       document-idle
 // @license      MIT
 // ==/UserScript==
@@ -18,7 +17,7 @@
 (function () {
     'use strict';
 
-    console.log('pibbEnhanced script started (v1.3.2).');
+    console.log('pibbEnhanced script started (v1.3.3).');
 
     // 火狐浏览器兼容性检查
     function checkFirefoxCompatibility() {
@@ -28,7 +27,7 @@
             isFirefox: isFirefox,
             tampermonkeyVersion: typeof GM_info !== 'undefined' ? GM_info.version : 'unknown'
         });
-        
+
         if (isFirefox) {
             console.log('Firefox detected - using GM_xmlhttpRequest for network requests');
             // 检查必要的 GM 功能是否可用
@@ -39,7 +38,7 @@
         }
         return true;
     }
-    
+
     // 执行兼容性检查
     if (!checkFirefoxCompatibility()) {
         alert('pibbEnhanced: 检测到兼容性问题，请检查 Tampermonkey 设置');
@@ -55,6 +54,21 @@
         COMPLETED: 'pibbEnhanced_completed',
         LAST_UPDATE: 'pibbEnhanced_lastUpdate'
     };
+
+    // 中文字符安全处理函数
+    function sanitizeUnicodeString(str) {
+        if (!str || typeof str !== 'string') return '';
+
+        try {
+            // 移除可能导致问题的控制字符
+            return str.replace(/[\u0000-\u001F\u007F-\u009F]/g, '')
+                .replace(/[\uFEFF]/g, '') // 移除 BOM
+                .trim();
+        } catch (error) {
+            console.warn('String sanitization failed:', error);
+            return str.toString();
+        }
+    }
 
     class AssignmentDB {
         static saveAssignments(assignments) {
@@ -138,21 +152,64 @@
         }
     } class Assignment {
         constructor(title, calendarName, end, courseLink = null) {
-            this.title = title;
-            this.calendarName = calendarName;
+            // 使用安全的字符串处理
+            this.title = sanitizeUnicodeString(title) || 'Untitled Assignment';
+            this.calendarName = sanitizeUnicodeString(calendarName) || 'Unknown Course';
             this.end = new Date(end);
             this.courseLink = courseLink;
             this.id = this.generateId();
-        }
 
-        generateId() {
-            const baseString = `${this.title}_${this.calendarName}_${this.end.getTime()}`;
-            return btoa(baseString).replace(/[+/=]/g, '').substring(0, 16);
+            // 添加调试信息
+            if (title !== this.title || calendarName !== this.calendarName) {
+                console.log('Unicode characters sanitized:', {
+                    originalTitle: title,
+                    sanitizedTitle: this.title,
+                    originalCalendarName: calendarName,
+                    sanitizedCalendarName: this.calendarName
+                });
+            }
+        } generateId() {
+            // 创建基础字符串，确保内容安全
+            const safeTitle = this.title.substring(0, 50); // 限制长度
+            const safeCalendarName = this.calendarName.substring(0, 30); // 限制长度
+            const baseString = `${safeTitle}_${safeCalendarName}_${this.end.getTime()}`;
+
+            console.log('Generating ID for assignment with Chinese characters:', {
+                title: this.title,
+                calendarName: this.calendarName,
+                baseStringLength: baseString.length
+            });
+
+            // 方法1: 使用简单而可靠的哈希方法 (优先选择，避免 btoa 问题)
+            try {
+                let hash = 5381; // 使用 djb2 哈希算法，对 Unicode 更友好
+                for (let i = 0; i < baseString.length; i++) {
+                    const char = baseString.charCodeAt(i);
+                    hash = ((hash << 5) + hash) + char; // hash * 33 + char
+                }
+                const hashResult = Math.abs(hash).toString(36).substring(0, 16);
+                console.log('Assignment ID generated using djb2 hash:', hashResult);
+                return hashResult;
+            } catch (hashError) {
+                console.warn('Hash method failed:', hashError);
+            }
+
+            // 方法2: 备用的时间戳 + 随机数方案
+            try {
+                const timestamp = this.end.getTime().toString(36);
+                const random = Math.random().toString(36).substring(2, 8);
+                const fallbackId = `${timestamp}_${random}`.substring(0, 16);
+                console.warn('Using timestamp fallback ID:', fallbackId);
+                return fallbackId;
+            } catch (finalError) {
+                console.error('All ID generation methods failed:', finalError);
+                return `err_${Date.now().toString(36)}`.substring(0, 16);
+            }
         }
-    }    async function loadAssignments(url, timeout = 15000) {
+    } async function loadAssignments(url, timeout = 15000) {
         console.log(`Fetching assignments from: ${url} with ${timeout}ms timeout`);
         console.log('Browser:', navigator.userAgent.includes('Firefox') ? 'Firefox' : 'Other');
-        
+
         return new Promise((resolve) => {
             GM_xmlhttpRequest({
                 method: 'GET',
@@ -163,10 +220,10 @@
                     'Accept': 'application/json, text/plain, */*',
                     'Cache-Control': 'no-cache'
                 },
-                onload: function(response) {
+                onload: function (response) {
                     console.log('GM_xmlhttpRequest onload - status:', response.status);
                     console.log('Response headers:', response.responseHeaders);
-                    
+
                     if (response.status !== 200) {
                         let errorMsg = `Server returned error status: ${response.status}`;
                         if (response.status === 500) {
@@ -193,10 +250,11 @@
                         resolve({ success: false, errorType: 'invalidFormat', message: "Incorrect data format from server (expected an array)." });
                         return;
                     }
-                    
+
                     const assignments = jsonData.map(item => new Assignment(item.title, item.calendarName, item.end));
-                    resolve({ success: true, data: assignments });                },
-                onerror: function(error) {
+                    resolve({ success: true, data: assignments });
+                },
+                onerror: function (error) {
                     console.error("GM_xmlhttpRequest error:", error);
                     console.error("Error details:", {
                         readyState: error.readyState || 'unknown',
@@ -206,16 +264,16 @@
                     });
                     resolve({ success: false, errorType: 'network', message: "Network connection error or server unresponsive. Please check your network and try again." });
                 },
-                ontimeout: function() {
+                ontimeout: function () {
                     console.error("GM_xmlhttpRequest timeout:", url);
                     resolve({ success: false, errorType: 'timeout', message: "Timeout loading assignment data. Please check your network connection or try again later." });
                 }
             });
         });
-    }    async function loadCourseLinksFromXML(url, timeout = 10000) {
+    } async function loadCourseLinksFromXML(url, timeout = 10000) {
         console.log(`Fetching course links from XML: ${url} with ${timeout}ms timeout`);
         console.log('Browser:', navigator.userAgent.includes('Firefox') ? 'Firefox' : 'Other');
-        
+
         return new Promise((resolve) => {
             GM_xmlhttpRequest({
                 method: 'GET',
@@ -226,10 +284,10 @@
                     'Accept': 'application/xml, text/xml, */*',
                     'Cache-Control': 'no-cache'
                 },
-                onload: function(response) {
+                onload: function (response) {
                     console.log('GM_xmlhttpRequest XML onload - status:', response.status);
                     console.log('XML Response headers:', response.responseHeaders);
-                    
+
                     if (response.status !== 200) {
                         console.error(`Error fetching XML: ${response.status} ${response.statusText} from ${url}`);
                         resolve({ success: false, errorType: 'httpError', message: `Failed to load course links XML: ${response.status}` });
@@ -267,13 +325,14 @@
                                 console.warn("Found a link tag without proper course name or href in XML", link);
                             }
                         });
-                        
+
                         resolve({ success: true, data: courseLinksMap });
                     } catch (error) {
                         console.error("Error parsing XML:", error);
                         resolve({ success: false, errorType: 'parseError', message: "Error processing course links XML." });
-                    }                },
-                onerror: function(error) {
+                    }
+                },
+                onerror: function (error) {
                     console.error("GM_xmlhttpRequest XML error:", error);
                     console.error("XML Error details:", {
                         readyState: error.readyState || 'unknown',
@@ -283,7 +342,7 @@
                     });
                     resolve({ success: false, errorType: 'network', message: "Error loading course links XML." });
                 },
-                ontimeout: function() {
+                ontimeout: function () {
                     console.error("GM_xmlhttpRequest XML timeout:", url);
                     resolve({ success: false, errorType: 'timeout', message: "Timeout fetching course links XML." });
                 }

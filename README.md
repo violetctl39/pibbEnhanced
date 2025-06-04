@@ -1,7 +1,7 @@
 # pibbEnhanced - SCUPI Blackboard Assignment Enhancer
 
 [![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg)](https://opensource.org/licenses/MIT)
-[![Version](https://img.shields.io/badge/Version-1.3.2-blue.svg)](https://github.com/violetctl39/pibbEnhanced)
+[![Version](https://img.shields.io/badge/Version-1.3.3-blue.svg)](https://github.com/violetctl39/pibbEnhanced)
 [![GreasyFork](https://img.shields.io/badge/GreasyFork-Install-brightgreen.svg)](https://greasyfork.org/zh-CN/scripts/537754-pibbenhanced)
 [![UserScript](https://img.shields.io/badge/UserScript-Tampermonkey%20%7C%20Violentmonkey-orange.svg)](https://www.tampermonkey.net/)
 [![GitHub Stars](https://img.shields.io/github/stars/violetctl39/pibbEnhanced?style=social)](https://github.com/violetctl39/pibbEnhanced)
@@ -146,7 +146,8 @@ const DB_KEYS = {
 | Module not replaced | Check if you're on the correct SCUPI Blackboard portal page | 模块未替换 | 检查是否在正确的SCUPI Blackboard门户页面 |
 | Assignment data not loading | Verify network connection and Blackboard calendar access | 作业数据未加载 | 验证网络连接和Blackboard日历访问权限 |
 | Countdown timers not updating | Refresh page, check Tampermonkey script status | 倒计时未更新 | 刷新页面，检查Tampermonkey脚本状态 |
-| Firefox network connection error | Script v1.3.2+ has built-in Firefox compatibility fixes | 火狐浏览器网络连接错误 | 脚本 v1.3.2+ 内置火狐兼容性修复 |
+| Firefox network connection error | Script v1.3.3+ has built-in Firefox compatibility fixes | 火狐浏览器网络连接错误 | 脚本 v1.3.3+ 内置火狐兼容性修复 |
+| Firefox DOMException error | Upgrade to v1.3.3+ which fixes Unicode character handling | 火狐浏览器DOMException错误 | 升级到 v1.3.3+ 修复Unicode字符处理 |
 | Script interface not displayed | Ensure you're on pibb.scu.edu.cn portal, reinstall if needed | 脚本界面未显示 | 确保在pibb.scu.edu.cn门户页面，必要时重新安装 |
 | Completion status not saved | Check browser storage permissions and Tampermonkey grants | 完成状态未保存 | 检查浏览器存储权限和Tampermonkey授权 |
 | Assignment recovery failed | Try force refresh to reload assignment database | 作业恢复失败 | 尝试强制刷新重新加载作业数据库 |
@@ -172,7 +173,7 @@ A: Latest version is available on both [GreasyFork](https://greasyfork.org/zh-CN
 A: No, it only replaces one module display. All other Blackboard features remain unchanged. | 不会，它只替换一个模块显示。所有其他Blackboard功能保持不变。
 
 **Q: Does the script work properly on Firefox? | 脚本在火狐浏览器上能正常工作吗？**  
-A: Yes, version 1.3.2+ includes enhanced Firefox compatibility using GM_xmlhttpRequest for cross-origin requests. | 是的，版本 1.3.2+ 包含增强的火狐兼容性，使用 GM_xmlhttpRequest 处理跨域请求。
+A: Yes, version 1.3.3+ includes enhanced Firefox compatibility with DOMException fixes and cross-origin request support. | 是的，版本 1.3.3+ 包含增强的火狐兼容性，修复了 DOMException 错误和跨域请求支持。
 
 ## 📄 License | 许可证
 
@@ -190,7 +191,13 @@ This project is licensed under the [MIT License](LICENSE) | 本项目采用 [MIT
 
 ## 📋 Changelog | 更新日志
 
-### Version 1.3.2 (Latest) | 版本 1.3.2（最新）
+### Version 1.3.3 (Latest) | 版本 1.3.3（最新）
+- 🦊 **Firefox DOMException Fix**: Fixed Unicode character handling in ID generation to prevent DOMException errors | 火狐DOMException修复：修复ID生成中的Unicode字符处理，防止DOMException错误
+- 🔧 **Improved btoa() Compatibility**: Added fallback hash method for browsers with strict Unicode handling | 改进btoa()兼容性：为严格Unicode处理的浏览器添加备用哈希方法
+- 🌐 **Cross-Origin Permission Optimization**: Removed problematic wildcard connect permission | 跨域权限优化：移除有问题的通配符连接权限
+- 🛡️ **Enhanced Error Handling**: Better error recovery for character encoding issues | 增强错误处理：更好的字符编码问题错误恢复
+
+### Version 1.3.2 | 版本 1.3.2
 - 🦊 **Enhanced Firefox Compatibility**: Fixed network connection issues in Firefox by using GM_xmlhttpRequest | 增强火狐兼容性：使用 GM_xmlhttpRequest 修复火狐浏览器网络连接问题
 - 🔧 **Improved Error Handling**: Enhanced debugging information and error details for network requests | 改进错误处理：增强网络请求的调试信息和错误详情
 - 🌐 **Cross-Origin Request Support**: Added comprehensive cross-origin permissions for better compatibility | 跨域请求支持：添加全面的跨域权限以提高兼容性
@@ -228,7 +235,7 @@ If this project helps you, please give it a ⭐️! | 如果这个项目对你�
 
 ---
 
-**Version | 版本**: 1.3.2  
+**Version | 版本**: 1.3.3  
 **Author | 作者**: [violetctl39](https://github.com/violetctl39)  
 **License | 许可证**: MIT  
 **GreasyFork**: [Install Script](https://greasyfork.org/zh-CN/scripts/537754-pibbenhanced) | [安装脚本](https://greasyfork.org/zh-CN/scripts/537754-pibbenhanced)  

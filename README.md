@@ -1,7 +1,7 @@
 # pibbEnhanced - SCUPI Blackboard Assignment Enhancer
 
 [![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg)](https://opensource.org/licenses/MIT)
-[![Version](https://img.shields.io/badge/Version-1.3.0-blue.svg)](https://github.com/violetctl39/pibbEnhanced)
+[![Version](https://img.shields.io/badge/Version-1.3.2-blue.svg)](https://github.com/violetctl39/pibbEnhanced)
 [![GreasyFork](https://img.shields.io/badge/GreasyFork-Install-brightgreen.svg)](https://greasyfork.org/zh-CN/scripts/537754-pibbenhanced)
 [![UserScript](https://img.shields.io/badge/UserScript-Tampermonkey%20%7C%20Violentmonkey-orange.svg)](https://www.tampermonkey.net/)
 [![GitHub Stars](https://img.shields.io/github/stars/violetctl39/pibbEnhanced?style=social)](https://github.com/violetctl39/pibbEnhanced)
@@ -146,6 +146,7 @@ const DB_KEYS = {
 | Module not replaced | Check if you're on the correct SCUPI Blackboard portal page | 模块未替换 | 检查是否在正确的SCUPI Blackboard门户页面 |
 | Assignment data not loading | Verify network connection and Blackboard calendar access | 作业数据未加载 | 验证网络连接和Blackboard日历访问权限 |
 | Countdown timers not updating | Refresh page, check Tampermonkey script status | 倒计时未更新 | 刷新页面，检查Tampermonkey脚本状态 |
+| Firefox network connection error | Script v1.3.2+ has built-in Firefox compatibility fixes | 火狐浏览器网络连接错误 | 脚本 v1.3.2+ 内置火狐兼容性修复 |
 | Script interface not displayed | Ensure you're on pibb.scu.edu.cn portal, reinstall if needed | 脚本界面未显示 | 确保在pibb.scu.edu.cn门户页面，必要时重新安装 |
 | Completion status not saved | Check browser storage permissions and Tampermonkey grants | 完成状态未保存 | 检查浏览器存储权限和Tampermonkey授权 |
 | Assignment recovery failed | Try force refresh to reload assignment database | 作业恢复失败 | 尝试强制刷新重新加载作业数据库 |
@@ -170,6 +171,9 @@ A: Latest version is available on both [GreasyFork](https://greasyfork.org/zh-CN
 **Q: Does the script affect Blackboard's original functionality? | 脚本会影响Blackboard的原始功能吗？**  
 A: No, it only replaces one module display. All other Blackboard features remain unchanged. | 不会，它只替换一个模块显示。所有其他Blackboard功能保持不变。
 
+**Q: Does the script work properly on Firefox? | 脚本在火狐浏览器上能正常工作吗？**  
+A: Yes, version 1.3.2+ includes enhanced Firefox compatibility using GM_xmlhttpRequest for cross-origin requests. | 是的，版本 1.3.2+ 包含增强的火狐兼容性，使用 GM_xmlhttpRequest 处理跨域请求。
+
 ## 📄 License | 许可证
 
 This project is licensed under the [MIT License](LICENSE) | 本项目采用 [MIT 许可证](LICENSE) 开源。
@@ -186,7 +190,16 @@ This project is licensed under the [MIT License](LICENSE) | 本项目采用 [MIT
 
 ## 📋 Changelog | 更新日志
 
-### Version 1.3.0 (Latest) | 版本 1.3.0（最新）
+### Version 1.3.2 (Latest) | 版本 1.3.2（最新）
+- 🦊 **Enhanced Firefox Compatibility**: Fixed network connection issues in Firefox by using GM_xmlhttpRequest | 增强火狐兼容性：使用 GM_xmlhttpRequest 修复火狐浏览器网络连接问题
+- 🔧 **Improved Error Handling**: Enhanced debugging information and error details for network requests | 改进错误处理：增强网络请求的调试信息和错误详情
+- 🌐 **Cross-Origin Request Support**: Added comprehensive cross-origin permissions for better compatibility | 跨域请求支持：添加全面的跨域权限以提高兼容性
+- 🛡️ **Compatibility Checking**: Built-in browser and Tampermonkey feature detection | 兼容性检查：内置浏览器和 Tampermonkey 功能检测
+
+### Version 1.3.1 | 版本 1.3.1
+- 🔄 **Network Request Optimization**: Replaced fetch() with GM_xmlhttpRequest for better cross-origin support | 网络请求优化：用 GM_xmlhttpRequest 替换 fetch() 以更好地支持跨域
+
+### Version 1.3.0 | 版本 1.3.0
 - ⚡ **Enhanced Database Storage**: Implemented comprehensive local database functionality | 增强数据库存储：实现全面的本地数据库功能
 - 🔄 **Manual Completion Tracking**: Added manual assignment completion status tracking | 手动完成跟踪：增加手动作业完成状态跟踪
 - 💾 **Assignment Recovery Features**: Introduced recovery options for mistakenly marked assignments | 作业恢复功能：引入误标记作业的恢复选项
@@ -215,7 +228,7 @@ If this project helps you, please give it a ⭐️! | 如果这个项目对你�
 
 ---
 
-**Version | 版本**: 1.3.0  
+**Version | 版本**: 1.3.2  
 **Author | 作者**: [violetctl39](https://github.com/violetctl39)  
 **License | 许可证**: MIT  
 **GreasyFork**: [Install Script](https://greasyfork.org/zh-CN/scripts/537754-pibbenhanced) | [安装脚本](https://greasyfork.org/zh-CN/scripts/537754-pibbenhanced)  

@@ -1,13 +1,16 @@
 // ==UserScript==
 // @name         pibbEnhanced
 // @namespace    http://tampermonkey.net/
-// @version      1.3.0
+// @version      1.3.2
 // @description  Refines SCUPI Blackboard module to display assignments with database storage, manual completion tracking, and recovery features. Force refresh preserves user completion status while updating assignment cache. Ensures only the assignment list is scrollable, includes timeout/error feedback, and automatically reloads if page content overwrites script output.
 // @author       violetctl39
 // @match        https://pibb.scu.edu.cn/webapps/portal/execute/*
 // @grant        GM_setValue
 // @grant        GM_getValue
 // @grant        GM_deleteValue
+// @grant        GM_xmlhttpRequest
+// @connect      pibb.scu.edu.cn
+// @connect      *
 // @run-at       document-idle
 // @license      MIT
 // ==/UserScript==
@@ -15,7 +18,32 @@
 (function () {
     'use strict';
 
-    console.log('pibbEnhanced script started (v1.3.0).');
+    console.log('pibbEnhanced script started (v1.3.2).');
+
+    // 火狐浏览器兼容性检查
+    function checkFirefoxCompatibility() {
+        const isFirefox = navigator.userAgent.includes('Firefox');
+        console.log('Browser detection:', {
+            userAgent: navigator.userAgent,
+            isFirefox: isFirefox,
+            tampermonkeyVersion: typeof GM_info !== 'undefined' ? GM_info.version : 'unknown'
+        });
+        
+        if (isFirefox) {
+            console.log('Firefox detected - using GM_xmlhttpRequest for network requests');
+            // 检查必要的 GM 功能是否可用
+            if (typeof GM_xmlhttpRequest === 'undefined') {
+                console.error('GM_xmlhttpRequest is not available! Please check Tampermonkey settings.');
+                return false;
+            }
+        }
+        return true;
+    }
+    
+    // 执行兼容性检查
+    if (!checkFirefoxCompatibility()) {
+        alert('pibbEnhanced: 检测到兼容性问题，请检查 Tampermonkey 设置');
+    }
 
     const SCRIPT_CONTENT_ID = 'userscript-assignment-content';
     let isMainRunning = false;
@@ -121,112 +149,146 @@
             const baseString = `${this.title}_${this.calendarName}_${this.end.getTime()}`;
             return btoa(baseString).replace(/[+/=]/g, '').substring(0, 16);
         }
-    }
-
-    async function loadAssignments(url, timeout = 15000) {
+    }    async function loadAssignments(url, timeout = 15000) {
         console.log(`Fetching assignments from: ${url} with ${timeout}ms timeout`);
-        const controller = new AbortController();
-        const signal = controller.signal;
-        const timeoutId = setTimeout(() => controller.abort(), timeout);
+        console.log('Browser:', navigator.userAgent.includes('Firefox') ? 'Firefox' : 'Other');
+        
+        return new Promise((resolve) => {
+            GM_xmlhttpRequest({
+                method: 'GET',
+                url: url,
+                timeout: timeout,
+                headers: {
+                    'User-Agent': navigator.userAgent,
+                    'Accept': 'application/json, text/plain, */*',
+                    'Cache-Control': 'no-cache'
+                },
+                onload: function(response) {
+                    console.log('GM_xmlhttpRequest onload - status:', response.status);
+                    console.log('Response headers:', response.responseHeaders);
+                    
+                    if (response.status !== 200) {
+                        let errorMsg = `Server returned error status: ${response.status}`;
+                        if (response.status === 500) {
+                            errorMsg = "Internal Server Error (HTTP 500). Please try again later or check the server status.";
+                        } else if (response.status === 404) {
+                            errorMsg = "Requested resource not found (HTTP 404). Please check if the URL is correct.";
+                        }
+                        console.error(errorMsg, response);
+                        resolve({ success: false, errorType: 'httpError', message: errorMsg });
+                        return;
+                    }
 
-        try {
-            const response = await fetch(url, { signal });
-            clearTimeout(timeoutId);
+                    let jsonData;
+                    try {
+                        jsonData = JSON.parse(response.responseText);
+                    } catch (e) {
+                        console.error("Failed to parse JSON data:", e);
+                        resolve({ success: false, errorType: 'invalidFormat', message: "Could not parse server response, format might not be valid JSON." });
+                        return;
+                    }
 
-            if (!response.ok) {
-                let errorMsg = `Server returned error status: ${response.status}`;
-                if (response.status === 500) {
-                    errorMsg = "Internal Server Error (HTTP 500). Please try again later or check the server status.";
-                } else if (response.status === 404) {
-                    errorMsg = "Requested resource not found (HTTP 404). Please check if the URL is correct.";
-                }
-                console.error(errorMsg, response);
-                return { success: false, errorType: 'httpError', message: errorMsg };
-            }
-
-            let jsonData;
-            try {
-                jsonData = await response.json();
-            } catch (e) {
-                console.error("Failed to parse JSON data:", e);
-                return { success: false, errorType: 'invalidFormat', message: "Could not parse server response, format might not be valid JSON." };
-            }
-
-            if (!Array.isArray(jsonData)) {
-                console.error("Fetched data is not an array:", jsonData);
-                return { success: false, errorType: 'invalidFormat', message: "Incorrect data format from server (expected an array)." };
-            }
-            const assignments = jsonData.map(item => new Assignment(item.title, item.calendarName, item.end));
-            return { success: true, data: assignments };
-
-        } catch (error) {
-            clearTimeout(timeoutId);
-            if (error.name === 'AbortError') {
-                console.error("Timeout loading assignments:", url);
-                return { success: false, errorType: 'timeout', message: "Timeout loading assignment data. Please check your network connection or try again later." };
-            } else {
-                console.error("Failed to load or parse JSON file (network issue):", error);
-                return { success: false, errorType: 'network', message: "Network connection error or server unresponsive. Please check your network and try again." };
-            }
-        }
-    }
-
-    async function loadCourseLinksFromXML(url, timeout = 10000) {
-        console.log(`Fetching course links from XML: ${url} with ${timeout}ms timeout`);
-        const controller = new AbortController();
-        const signal = controller.signal;
-        const timeoutId = setTimeout(() => controller.abort(), timeout);
-
-        try {
-            const response = await fetch(url, { signal });
-            clearTimeout(timeoutId);
-
-            if (!response.ok) {
-                console.error(`Error fetching XML: ${response.status} ${response.statusText} from ${url}`);
-                return { success: false, errorType: 'httpError', message: `Failed to load course links XML: ${response.status}` };
-            }
-
-            const xmlString = await response.text();
-            const parser = new DOMParser();
-            const outerXmlDoc = parser.parseFromString(xmlString, "application/xml");
-
-            const cdataNode = outerXmlDoc.querySelector('contents');
-            if (!cdataNode || !cdataNode.firstChild || cdataNode.firstChild.nodeType !== Node.CDATA_SECTION_NODE) {
-                console.error("CDATA section not found or invalid in XML from " + url);
-                return { success: false, errorType: 'xmlFormatError', message: "Invalid XML structure: CDATA section missing." };
-            }
-
-            const htmlString = cdataNode.firstChild.nodeValue;
-            const htmlDoc = parser.parseFromString(htmlString, "text/html");
-
-            const courseLinksMap = new Map();
-            const links = htmlDoc.querySelectorAll("ul.portletList-img li a");
-
-            if (links.length === 0) {
-                console.warn("No course links found in the XML content from " + url);
-            }
-
-            links.forEach(link => {
-                const courseName = link.textContent.trim();
-                const courseUrl = link.getAttribute("href");
-                if (courseName && courseUrl) {
-                    courseLinksMap.set(courseName, courseUrl.trim());
-                } else {
-                    console.warn("Found a link tag without proper course name or href in XML", link);
+                    if (!Array.isArray(jsonData)) {
+                        console.error("Fetched data is not an array:", jsonData);
+                        resolve({ success: false, errorType: 'invalidFormat', message: "Incorrect data format from server (expected an array)." });
+                        return;
+                    }
+                    
+                    const assignments = jsonData.map(item => new Assignment(item.title, item.calendarName, item.end));
+                    resolve({ success: true, data: assignments });                },
+                onerror: function(error) {
+                    console.error("GM_xmlhttpRequest error:", error);
+                    console.error("Error details:", {
+                        readyState: error.readyState || 'unknown',
+                        status: error.status || 'unknown',
+                        statusText: error.statusText || 'unknown',
+                        responseText: error.responseText || 'no response'
+                    });
+                    resolve({ success: false, errorType: 'network', message: "Network connection error or server unresponsive. Please check your network and try again." });
+                },
+                ontimeout: function() {
+                    console.error("GM_xmlhttpRequest timeout:", url);
+                    resolve({ success: false, errorType: 'timeout', message: "Timeout loading assignment data. Please check your network connection or try again later." });
                 }
             });
-            return { success: true, data: courseLinksMap };
+        });
+    }    async function loadCourseLinksFromXML(url, timeout = 10000) {
+        console.log(`Fetching course links from XML: ${url} with ${timeout}ms timeout`);
+        console.log('Browser:', navigator.userAgent.includes('Firefox') ? 'Firefox' : 'Other');
+        
+        return new Promise((resolve) => {
+            GM_xmlhttpRequest({
+                method: 'GET',
+                url: url,
+                timeout: timeout,
+                headers: {
+                    'User-Agent': navigator.userAgent,
+                    'Accept': 'application/xml, text/xml, */*',
+                    'Cache-Control': 'no-cache'
+                },
+                onload: function(response) {
+                    console.log('GM_xmlhttpRequest XML onload - status:', response.status);
+                    console.log('XML Response headers:', response.responseHeaders);
+                    
+                    if (response.status !== 200) {
+                        console.error(`Error fetching XML: ${response.status} ${response.statusText} from ${url}`);
+                        resolve({ success: false, errorType: 'httpError', message: `Failed to load course links XML: ${response.status}` });
+                        return;
+                    }
 
-        } catch (error) {
-            clearTimeout(timeoutId);
-            if (error.name === 'AbortError') {
-                console.error("Timeout fetching course links XML:", url);
-                return { success: false, errorType: 'timeout', message: "Timeout fetching course links XML." };
-            } else {
-                console.error("Error loading or parsing course links XML:", error);
-                return { success: false, errorType: 'parseError', message: "Error processing course links XML." };
-            }
-        }
+                    try {
+                        const xmlString = response.responseText;
+                        const parser = new DOMParser();
+                        const outerXmlDoc = parser.parseFromString(xmlString, "application/xml");
+
+                        const cdataNode = outerXmlDoc.querySelector('contents');
+                        if (!cdataNode || !cdataNode.firstChild || cdataNode.firstChild.nodeType !== Node.CDATA_SECTION_NODE) {
+                            console.error("CDATA section not found or invalid in XML from " + url);
+                            resolve({ success: false, errorType: 'xmlFormatError', message: "Invalid XML structure: CDATA section missing." });
+                            return;
+                        }
+
+                        const htmlString = cdataNode.firstChild.nodeValue;
+                        const htmlDoc = parser.parseFromString(htmlString, "text/html");
+
+                        const courseLinksMap = new Map();
+                        const links = htmlDoc.querySelectorAll("ul.portletList-img li a");
+
+                        if (links.length === 0) {
+                            console.warn("No course links found in the XML content from " + url);
+                        }
+
+                        links.forEach(link => {
+                            const courseName = link.textContent.trim();
+                            const courseUrl = link.getAttribute("href");
+                            if (courseName && courseUrl) {
+                                courseLinksMap.set(courseName, courseUrl.trim());
+                            } else {
+                                console.warn("Found a link tag without proper course name or href in XML", link);
+                            }
+                        });
+                        
+                        resolve({ success: true, data: courseLinksMap });
+                    } catch (error) {
+                        console.error("Error parsing XML:", error);
+                        resolve({ success: false, errorType: 'parseError', message: "Error processing course links XML." });
+                    }                },
+                onerror: function(error) {
+                    console.error("GM_xmlhttpRequest XML error:", error);
+                    console.error("XML Error details:", {
+                        readyState: error.readyState || 'unknown',
+                        status: error.status || 'unknown',
+                        statusText: error.statusText || 'unknown',
+                        responseText: error.responseText || 'no response'
+                    });
+                    resolve({ success: false, errorType: 'network', message: "Error loading course links XML." });
+                },
+                ontimeout: function() {
+                    console.error("GM_xmlhttpRequest XML timeout:", url);
+                    resolve({ success: false, errorType: 'timeout', message: "Timeout fetching course links XML." });
+                }
+            });
+        });
     }
 
     function formatDateTime(date) {

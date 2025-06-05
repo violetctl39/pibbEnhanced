@@ -24,6 +24,28 @@
 - 📱 **Optimized Scrolling** | **优化滚动**：Only assignment list scrollable for enhanced user experience | 仅作业列表可滚动，增强用户体验
 - 💾 **Smart Caching** | **智能缓存**：Automatic data caching with timeout and error handling mechanisms | 自动数据缓存，配有超时和错误处理机制
 
+## 📸 Screenshot | 界面截图
+
+<div align="center">
+
+![pibbEnhanced Interface Demo](https://github.com/user-attachments/assets/f0aba21a-0679-47d9-889e-2750679f5be3)
+
+*Real-time assignment deadline tracking with color-coded countdown timers | 实时作业截止日期跟踪，配有颜色编码的倒计时器*
+
+</div>
+
+The above screenshot shows the enhanced Assignment Deadline module in action, displaying:
+- Real-time countdown timers with color coding
+- Assignment titles and course information
+- Mark Complete functionality
+- Refresh button for manual updates
+
+上图展示了增强的作业截止日期模块的实际效果，包括：
+- 带颜色编码的实时倒计时器
+- 作业标题和课程信息
+- 标记完成功能
+- 手动更新的刷新按钮
+
 ## 📦 Installation | 安装方法
 
 ### 🚀 Method 1: Install from GreasyFork (Recommended) | 方法一：从 GreasyFork 安装（推荐）

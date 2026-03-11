@@ -1,7 +1,7 @@
 # pibbEnhanced - SCUPI Blackboard Assignment Enhancer
 
 [![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg)](https://opensource.org/licenses/MIT)
-[![Version](https://img.shields.io/badge/Version-1.3.4-blue.svg)](https://github.com/violetctl39/pibbEnhanced)
+[![Version](https://img.shields.io/badge/Version-1.3.5-blue.svg)](https://github.com/violetctl39/pibbEnhanced)
 [![GreasyFork](https://img.shields.io/badge/GreasyFork-Install-brightgreen.svg)](https://greasyfork.org/zh-CN/scripts/537754-pibbenhanced)
 [![UserScript](https://img.shields.io/badge/UserScript-Tampermonkey%20%7C%20Violentmonkey-orange.svg)](https://www.tampermonkey.net/)
 [![GitHub Stars](https://img.shields.io/github/stars/violetctl39/pibbEnhanced?style=social)](https://github.com/violetctl39/pibbEnhanced)
@@ -15,7 +15,7 @@
 ## 🚀 Features | 特性
 
 - ⚡ **Ultra-Fast Assignment Tracking** | **极速作业跟踪**：Real-time countdown timers with color-coded urgency indicators for immediate deadline visibility | 实时倒计时定时器，配有颜色编码的紧急程度指示器，立即显示截止日期
-- 🎯 **Precise Module Replacement** | **精确模块替换**：Seamlessly replaces "On Demand Help" module with dedicated "Assignment Deadline" interface | 无缝替换"随需帮助"模块为专用"作业截止日期"界面
+- 🎯 **Precise Module Replacement** | **精确模块替换**：Seamlessly replaces "Academic Materials & Tools" module with dedicated "Assignment Deadline" interface | 无缝替换"学术材料与工具"模块为专用"作业截止日期"界面
 - 📋 **Smart Assignment Integration** | **智能作业集成**：Fetches assignment data from Blackboard calendar with direct course page links | 从 Blackboard 日历获取作业数据，包含直接课程页面链接
 - 🔄 **Intelligent Data Management** | **智能数据管理**：Local database storage with manual completion tracking and recovery features | 本地数据库存储，支持手动完成跟踪和恢复功能
 - 📊 **Real-time Status Updates** | **实时状态更新**：Live countdown updates every second with comprehensive deadline monitoring | 每秒实时倒计时更新，全面的截止日期监控
@@ -79,7 +79,7 @@ The above screenshot shows the enhanced Assignment Deadline module in action, di
 5. **Refresh** | **刷新**: Use force refresh to update assignment data | 使用强制刷新更新作业数据
 
 ### Step 1: Automatic Module Replacement | 步骤一：自动模块替换
-The script automatically identifies and replaces the "On Demand Help" module | 脚本自动识别并替换"随需帮助"模块：
+The script automatically identifies and replaces the "Academic Materials & Tools" module | 脚本自动识别并替换"学术材料与工具"模块：
 - Module title changes to "Assignment Deadline" | 模块标题更改为"作业截止日期"
 - Assignment list with real-time countdown timers | 带有实时倒计时的作业列表
 - Color-coded urgency indicators | 颜色编码的紧急程度指示器
@@ -113,7 +113,7 @@ The script automatically identifies and replaces the "On Demand Help" module | �
 
 ## 🔧 Workflow | 工作流程
 
-1. **🔍 Module Detection** | **模块检测** → Automatically identifies "On Demand Help" module for replacement | 自动识别"随需帮助"模块进行替换
+1. **🔍 Module Detection** | **模块检测** → Automatically identifies "Academic Materials & Tools" module for replacement | 自动识别"学术材料与工具"模块进行替换
 2. **📊 Data Fetching** | **数据获取** → Retrieves assignment data from Blackboard calendar API | 从 Blackboard 日历 API 检索作业数据
 3. **🎯 Interface Generation** | **界面生成** → Creates dynamic assignment list with countdown timers | 创建带倒计时的动态作业列表
 4. **⏰ Real-time Updates** | **实时更新** → Updates countdown timers and status indicators every second | 每秒更新倒计时和状态指示器
@@ -156,7 +156,7 @@ const DB_KEYS = {
 
 1. **SCUPI System Specific** | **SCUPI系统专用**：Designed exclusively for SCUPI Blackboard (pibb.scu.edu.cn) | 专为SCUPI Blackboard设计（pibb.scu.edu.cn）
 2. **Local Storage Only** | **仅本地存储**：All data stored locally, no external server communication | 所有数据本地存储，无外部服务器通信
-3. **Module Replacement** | **模块替换**：Replaces "On Demand Help" module functionality | 替换"随需帮助"模块功能
+3. **Module Replacement** | **模块替换**：Replaces "Academic Materials & Tools" module functionality | 替换"学术材料与工具"模块功能
 4. **Manual Completion** | **手动完成**：Assignment completion must be marked manually by user | 作业完成必须由用户手动标记
 
 ## 🔍 Troubleshooting | 故障排除
@@ -213,8 +213,12 @@ This project is licensed under the [MIT License](LICENSE) | 本项目采用 [MIT
 
 ## 📋 Changelog | 更新日志
 
-### Version 1.3.4 (Latest) | 版本 1.3.4（最新）
-- 🏗️ **DOM Structure Enhancement**: Fixed DOM structure warnings by ensuring proper #div_27_1 element creation and handling | DOM结构增强：通过确保正确的#div_27_1元素创建和处理修复DOM结构警告
+### Version 1.3.5 (Latest) | 版本 1.3.5（最新）
+- 🔄 **Module Target Update**: Updated to target "Academic Materials & Tools" module following SCUPI Blackboard interface changes | 模块目标更新：根据SCUPI Blackboard界面更新，改为定位"学术材料与工具"模块
+- 📝 **Documentation Update**: Refreshed all documentation to reflect new module naming | 文档更新：刷新所有文档以反映新的模块命名
+
+### Version 1.3.4 | 版本 1.3.4
+- 🏗️ **DOM Structure Enhancement**: Fixed DOM structure warnings by ensuring proper #div_85_1 element creation and handling | DOM结构增强：通过确保正确的#div_85_1元素创建和处理修复DOM结构警告
 - 🔧 **Improved Element Detection**: Enhanced collapsible container detection with automatic element creation fallbacks | 改进元素检测：增强可折叠容器检测，自动元素创建备选方案
 - 🛡️ **Better Error Prevention**: Eliminated console warnings and improved module initialization reliability | 更好的错误预防：消除控制台警告，提高模块初始化可靠性
 - 🎯 **Consistent Module Structure**: Ensures proper DOM hierarchy for optimal script functionality | 一致的模块结构：确保正确的DOM层次结构以实现最佳脚本功能
@@ -263,7 +267,7 @@ If this project helps you, please give it a ⭐️! | 如果这个项目对你�
 
 ---
 
-**Version | 版本**: 1.3.4  
+**Version | 版本**: 1.3.5  
 **Author | 作者**: [violetctl39](https://github.com/violetctl39)  
 **License | 许可证**: MIT  
 **GreasyFork**: [Install Script](https://greasyfork.org/zh-CN/scripts/537754-pibbenhanced) | [安装脚本](https://greasyfork.org/zh-CN/scripts/537754-pibbenhanced)  

@@ -1,8 +1,8 @@
 // ==UserScript==
 // @name         pibbEnhanced
 // @namespace    http://tampermonkey.net/
-// @version      1.3.4
-// @description  Refines SCUPI Blackboard module to display assignments with database storage, manual completion tracking, and recovery features. Force refresh preserves user completion status while updating assignment cache. Ensures only the assignment list is scrollable, includes timeout/error feedback, and automatically reloads if page content overwrites script output.
+// @version      1.3.5
+// @description  Refines SCUPI Blackboard module to display assignments with database storage, manual completion tracking, and recovery features. Replaces Academic Materials & Tools module with Assignment Deadline interface. Force refresh preserves user completion status while updating assignment cache. Ensures only the assignment list is scrollable, includes timeout/error feedback, and automatically reloads if page content overwrites script output.
 // @author       violetctl39
 // @match        https://pibb.scu.edu.cn/webapps/portal/execute/*
 // @grant        GM_setValue
@@ -17,7 +17,7 @@
 (function () {
     'use strict';
 
-    console.log('pibbEnhanced script started (v1.3.4).');
+    console.log('pibbEnhanced script started (v1.3.5).');
 
     function checkFirefoxCompatibility() {
         const isFirefox = navigator.userAgent.includes('Firefox');
@@ -489,9 +489,9 @@
         console.log('Executing main()');
 
         try {
-            const targetModule = document.getElementById('module:_27_1');
+            const targetModule = document.getElementById('module:_85_1');
             if (!targetModule) {
-                console.error('Target module "module:_27_1" not found.');
+                console.error('Target module "module:_85_1" not found.');
                 return;
             }
 
@@ -518,30 +518,30 @@
                 console.warn('Original h2.dragHandle.clearfix header not found.');
             } let contentHostElement;
             let listContainer;
-            const collapsibleDiv = targetModule.querySelector('div.collapsible#On_Demand_Help_Tools');
+            const collapsibleDiv = targetModule.querySelector('div.collapsible#Academic_Materials_Tools');
 
             if (collapsibleDiv) {
                 contentHostElement = collapsibleDiv;
                 contentHostElement.innerHTML = '';
 
-                let innerDivForList = contentHostElement.querySelector('#div_27_1');
+                let innerDivForList = contentHostElement.querySelector('#div_85_1');
                 if (!innerDivForList) {
                     innerDivForList = document.createElement('div');
-                    innerDivForList.id = 'div_27_1';
+                    innerDivForList.id = 'div_85_1';
                     innerDivForList.style.cssText = 'padding: 10px; min-height: 100px;';
                     contentHostElement.appendChild(innerDivForList);
-                    console.log('Created missing #div_27_1 element within .collapsible container.');
+                    console.log('Created missing #div_85_1 element within .collapsible container.');
                 }
                 listContainer = innerDivForList;
             } else {
-                console.log('div.collapsible#On_Demand_Help_Tools not found. Creating a new content host structure.');
+                console.log('div.collapsible#Academic_Materials_Tools not found. Creating a new content host structure.');
                 contentHostElement = document.createElement('div');
                 contentHostElement.className = 'collapsible';
-                contentHostElement.id = 'On_Demand_Help_Tools';
+                contentHostElement.id = 'Academic_Materials_Tools';
                 contentHostElement.style.cssText = 'border: 1px solid #ddd; border-radius: 4px; margin: 10px 0; background: #fff;';
 
                 const innerDiv = document.createElement('div');
-                innerDiv.id = 'div_27_1';
+                innerDiv.id = 'div_85_1';
                 innerDiv.style.cssText = 'padding: 10px; min-height: 100px;';
                 contentHostElement.appendChild(innerDiv);
                 listContainer = innerDiv;

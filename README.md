@@ -46,79 +46,145 @@ The above screenshot shows the enhanced Assignment Deadline module in action, di
 - 标记完成功能
 - 手动更新的刷新按钮
 
-## 📦 Installation | 安装方法
+## 📦 Installation | 安装指南
 
-### 🚀 Method 1: Install from GreasyFork (Recommended) | 方法一：从 GreasyFork 安装（推荐）
-1. Install [Tampermonkey](https://www.tampermonkey.net/) browser extension | 安装 Tampermonkey 浏览器扩展
-2. Click to install: [📥 Install from GreasyFork](https://greasyfork.org/zh-CN/scripts/537754-pibbenhanced) | 点击从 GreasyFork 安装脚本
-3. GreasyFork will automatically redirect to Tampermonkey for installation | GreasyFork 会自动重定向到 Tampermonkey 进行安装
+使用本脚本需要完成两个步骤：**配置 Blackboard 页面** 和 **安装用户脚本**。
 
-### 🔧 Method 2: Install from GitHub | 方法二：从 GitHub 安装
-1. Install [Tampermonkey](https://www.tampermonkey.net/) browser extension | 安装 Tampermonkey 浏览器扩展
-2. Click to install: [📥 Install Script](https://github.com/violetctl39/pibbEnhanced/raw/main/pibbEnhanced.js) | 点击安装脚本
-3. Tampermonkey will automatically detect and prompt to install | Tampermonkey 会自动检测并提示安装
+---
 
-### 🛠️ Method 3: Manual Installation | 方法三：手动安装
-1. Install [Tampermonkey](https://www.tampermonkey.net/) browser extension | 安装 Tampermonkey 浏览器扩展
-### 🛠️ Method 3: Manual Installation | 方法三：手动安装
-1. Install [Tampermonkey](https://www.tampermonkey.net/) browser extension | 安装 Tampermonkey 浏览器扩展
-2. Copy the [script source code](https://github.com/violetctl39/pibbEnhanced/raw/main/pibbEnhanced.js) | 复制脚本源码
-3. Create a new script in Tampermonkey dashboard and paste the code | 在 Tampermonkey 管理页面创建新脚本并粘贴代码
+### 🎯 Step 1: Add Academic Materials Module | 第一步：添加学术材料模块
 
-### 🌐 Alternative: Violentmonkey Support | 替代方案：Violentmonkey 支持
-- Both [Tampermonkey](https://www.tampermonkey.net/) and [Violentmonkey](https://violentmonkey.github.io/) are supported | 同时支持 Tampermonkey 和 Violentmonkey
-- Installation methods work with both userscript managers | 安装方法适用于两种用户脚本管理器
+Blackboard 主页默认没有 Academic Materials 模块，需要手动添加：
 
-## 🔧 Usage | 使用方法
+#### 1.1 进入模块编辑界面 | Enter Module Edit Interface
+点击 Blackboard 主页右上角的 **"Add Module"** 按钮，进入模块管理界面。
 
-### ⚡ Quick Start | 快速开始
-1. **Install** | **安装**: Install the script via Tampermonkey | 通过 Tampermonkey 安装脚本
-2. **Navigate** | **导航**: Go to SCUPI Blackboard portal page | 进入川大匹院 Blackboard 门户页面
-3. **Automatic** | **自动运行**: Script automatically replaces module and displays assignments | 脚本自动替换模块并显示作业
-4. **Manage** | **管理**: Mark assignments as complete and track progress | 标记作业为完成并跟踪进度
-5. **Refresh** | **刷新**: Use force refresh to update assignment data | 使用强制刷新更新作业数据
+![Step 1: Click Add Module Button](https://github.com/user-attachments/assets/b5706a53-b26d-4a48-b3e4-52bf7ba86c95)
 
-### Step 1: Automatic Module Replacement | 步骤一：自动模块替换
-The script automatically identifies and replaces the "Academic Materials & Tools" module | 脚本自动识别并替换"学术材料与工具"模块：
-- Module title changes to "Assignment Deadline" | 模块标题更改为"作业截止日期"
-- Assignment list with real-time countdown timers | 带有实时倒计时的作业列表
-- Color-coded urgency indicators | 颜色编码的紧急程度指示器
+*点击 Add Module 按钮进入模块编辑界面*
 
-### Step 2: Monitor Assignment Status | 步骤二：监控作业状态
-- ⏰ Live countdown timers update every second | 实时倒计时每秒更新
-- 🔴 Red: Less than 1 day | 少于1天
-- 🟠 Orange: 1-2 days | 1-2天
-- 🟡 Yellow: 2-3 days | 2-3天
-- 🟢 Green: 5-7 days | 5-7天
-- ⚫ Gray: More than 7 days | 超过7天
+#### 1.2 添加 Academic Materials 模块 | Add the Module
+在模块列表中找到 **"Academic Materials"**，点击其 **"Add"** 按钮，将该模块添加到主页。
 
-### Step 3: Manage Completion Status | 步骤三：管理完成状态
-- Click "Mark Complete" to hide finished assignments | 点击"标记完成"隐藏已完成作业
-- Use recovery options to restore mistakenly marked assignments | 使用恢复选项恢复误标记的作业
-- Force refresh preserves completion status while updating data | 强制刷新在更新数据时保持完成状态
+![Step 2: Add Academic Materials Module](https://github.com/user-attachments/assets/34f5ec92-1047-4988-b375-2c69f30d0af4)
 
-### Step 4: Navigate to Course Pages | 步骤四：导航到课程页面
-- Click assignment titles for direct course page access | 点击作业标题直接访问课程页面
-- Seamless integration with Blackboard navigation | 与 Blackboard 导航无缝集成
 
-## ⚡ Advanced Assignment Features | 高级作业功能
+*点击 Academic Materials 模块的 Add 按钮*
 
-- **⚡ Real-time Updates** | **实时更新**：Second-by-second countdown precision with automatic status refresh | 秒级倒计时精度，自动状态刷新
-- **🔄 Smart Data Sync** | **智能数据同步**：Automatic calendar integration with local storage backup for offline access | 自动日历集成，本地存储备份实现离线访问  
-- **💾 Persistent Storage** | **持久化存储**：Local database with completion tracking that survives browser sessions | 本地数据库，完成跟踪在浏览器会话间保持
-- **🎯 Intelligent Filtering** | **智能过滤**：Automatic display of current and upcoming assignments with past due indicators | 自动显示当前和即将到来的作业，包含过期指示器
-- **⚡ Instant Recovery** | **即时恢复**：One-click restoration of mistakenly marked completed assignments | 一键恢复误标记完成的作业
-- **🚀 Ultra-Fast Loading** | **超快加载**：Optimized DOM manipulation with minimal performance impact | 优化DOM操作，最小性能影响
-- **📊 Status Monitoring** | **状态监控**：Built-in error handling and network timeout protection | 内置错误处理和网络超时保护
+添加完成后，刷新页面即可在主页看到该模块。
+
+---
+
+### 🔌 Step 2: Install Userscript Manager | 第二步：安装用户脚本管理器
+
+在浏览器中安装以下任一扩展（二选一）：
+
+| 扩展 | Chrome | Firefox | Edge |
+|------|--------|---------|------|
+| **Tampermonkey** (推荐) | [安装](https://chrome.google.com/webstore/detail/tampermonkey/dhdgffkkebhmkfjojejmpbldmpobfkfo) | [安装](https://addons.mozilla.org/firefox/addon/tampermonkey/) | [安装](https://microsoftedge.microsoft.com/addons/detail/tampermonkey/iikmkjmpaadaobahmlepeloendndfphd) |
+| **Violentmonkey** | [安装](https://chrome.google.com/webstore/detail/violentmonkey/jinjaccalgkegednnccohejagnlnfdag) | [安装](https://addons.mozilla.org/firefox/addon/violentmonkey/) | [安装](https://microsoftedge.microsoft.com/addons/detail/violentmonkey/eeagobfjdenkkddmbclomhiblgggliao) |
+
+---
+
+### 📥 Step 3: Install pibbEnhanced Script | 第三步：安装脚本
+
+#### 方法一：从 GreasyFork 安装（推荐）
+点击安装：**[📥 GreasyFork - pibbEnhanced](https://greasyfork.org/zh-CN/scripts/537754-pibbenhanced)**
+
+GreasyFork 会自动调用已安装的脚本管理器完成安装。
+
+#### 方法二：从 GitHub 安装
+点击安装：**[📥 GitHub Direct Install](https://github.com/violetctl39/pibbEnhanced/raw/main/pibbEnhanced.js)**
+
+#### 方法三：手动安装
+1. 打开 [脚本源码](https://github.com/violetctl39/pibbEnhanced/raw/main/pibbEnhanced.js)，复制全部代码
+2. 打开 Tampermonkey/Violentmonkey 管理面板
+3. 创建新脚本，粘贴代码并保存
+
+---
+
+### ✅ Installation Complete | 安装完成
+
+安装完成后，访问 SCUPI Blackboard 主页，脚本会自动将 **Academic Materials** 模块转换为 **Assignment Deadline** 作业截止日期模块。
+
+---
+
+## 🔧 Usage Guide | 使用指南
+
+### 📋 界面功能 | Interface Features
+
+脚本启动后，原 Academic Materials 模块会显示为作业截止日期列表：
+
+- **作业标题**：显示作业名称，可点击跳转到课程页面
+- **课程名称**：显示所属课程
+- **截止时间**：显示具体到期日期
+- **实时倒计时**：秒级精度显示剩余时间
+- **Complete 按钮**：标记作业为已完成
+
+### 🎨 颜色编码 | Color Coding
+
+倒计时根据紧急程度显示不同颜色：
+
+| 剩余时间 | 颜色 | 紧急程度 |
+|----------|------|----------|
+| < 1 天 | 🔴 红色 | 紧急 |
+| 1-2 天 | 🟠 深橙色 | 急迫 |
+| 2-3 天 | 🟡 橙色 | 警告 |
+| 3-5 天 | 🟡 浅橙色 | 注意 |
+| 5-7 天 | 🟢 绿色 | 正常 |
+| > 7 天 | ⚫ 灰色 | 充裕 |
+
+### 🔄 操作按钮 | Action Buttons
+
+模块标题栏提供以下操作按钮：
+
+| 按钮 | 功能 | 说明 |
+|------|------|------|
+| **↻** | 强制刷新 | 清除缓存并重新获取作业数据（保留完成状态） |
+| **↶** | 恢复作业 | 打开已完成作业列表，可恢复误标记的作业 |
+
+### 💾 数据管理 | Data Management
+
+- **自动缓存**：作业数据本地缓存，减少服务器请求
+- **完成状态持久化**：标记完成的作业在刷新/重启后仍保持隐藏
+- **智能过滤**：自动隐藏已过期作业（当天过期的仍会显示）
+- **一键恢复**：可随时恢复误标记为完成的作业
+
+---
+
+## ⚡ Advanced Features | 高级功能
+
+- **⚡ 实时更新**：秒级倒计时精度，自动状态刷新
+- **🔄 智能数据同步**：自动日历集成，本地存储备份支持离线访问
+- **💾 持久化存储**：本地数据库，完成跟踪在浏览器会话间保持
+- **🎯 智能过滤**：自动显示当前和即将到来的作业，包含过期指示器
+- **⚡ 即时恢复**：一键恢复误标记完成的作业
+- **🚀 超快加载**：优化 DOM 操作，最小性能影响
+- **📊 状态监控**：内置错误处理和网络超时保护
+
+---
 
 ## 🔧 Workflow | 工作流程
 
-1. **🔍 Module Detection** | **模块检测** → Automatically identifies "Academic Materials & Tools" module for replacement | 自动识别"学术材料与工具"模块进行替换
-2. **📊 Data Fetching** | **数据获取** → Retrieves assignment data from Blackboard calendar API | 从 Blackboard 日历 API 检索作业数据
-3. **🎯 Interface Generation** | **界面生成** → Creates dynamic assignment list with countdown timers | 创建带倒计时的动态作业列表
-4. **⏰ Real-time Updates** | **实时更新** → Updates countdown timers and status indicators every second | 每秒更新倒计时和状态指示器
-5. **💾 Data Persistence** | **数据持久化** → Saves completion status and assignment data locally | 本地保存完成状态和作业数据
-6. **🔄 Auto Refresh** | **自动刷新** → Maintains data freshness with periodic updates | 通过定期更新保持数据新鲜度
+```
+┌─────────────────┐    ┌─────────────────┐    ┌─────────────────┐
+│  模块检测        │ -> │  数据获取        │ -> │  界面生成        │
+│  Module Detect  │    │  Data Fetch     │    │  UI Generate    │
+└─────────────────┘    └─────────────────┘    └─────────────────┘
+         │                                              │
+         v                                              v
+┌─────────────────┐    ┌─────────────────┐    ┌─────────────────┐
+│  自动刷新        │ <- │  数据持久化      │ <- │  实时更新        │
+│  Auto Refresh   │    │  Data Persist   │    │  Real-time      │
+└─────────────────┘    └─────────────────┘    └─────────────────┘
+```
+
+1. **模块检测** → 自动识别 Academic Materials 模块进行替换
+2. **数据获取** → 从 Blackboard 日历 API 检索作业数据
+3. **界面生成** → 创建带倒计时的动态作业列表
+4. **实时更新** → 每秒更新倒计时和状态指示器
+5. **数据持久化** → 本地保存完成状态和作业数据
+6. **自动刷新** → 定期更新保持数据新鲜度
 
 ## 📝 Data Structure Guide | 数据结构说明
 
@@ -156,7 +222,7 @@ const DB_KEYS = {
 
 1. **SCUPI System Specific** | **SCUPI系统专用**：Designed exclusively for SCUPI Blackboard (pibb.scu.edu.cn) | 专为SCUPI Blackboard设计（pibb.scu.edu.cn）
 2. **Local Storage Only** | **仅本地存储**：All data stored locally, no external server communication | 所有数据本地存储，无外部服务器通信
-3. **Module Replacement** | **模块替换**：Replaces "Academic Materials & Tools" module functionality | 替换"学术材料与工具"模块功能
+3. **Module Required** | **需要添加模块**：Academic Materials module must be added manually before using this script | 使用前需手动添加 Academic Materials 模块
 4. **Manual Completion** | **手动完成**：Assignment completion must be marked manually by user | 作业完成必须由用户手动标记
 
 ## 🔍 Troubleshooting | 故障排除
@@ -165,6 +231,7 @@ const DB_KEYS = {
 
 | Problem | Solution | 问题 | 解决方案 |
 |---------|----------|------|----------|
+| Module not found | Add Academic Materials module via "Add Module" button first | 找不到模块 | 先通过"Add Module"按钮添加 Academic Materials 模块 |
 | Module not replaced | Check if you're on the correct SCUPI Blackboard portal page | 模块未替换 | 检查是否在正确的SCUPI Blackboard门户页面 |
 | Assignment data not loading | Verify network connection and Blackboard calendar access | 作业数据未加载 | 验证网络连接和Blackboard日历访问权限 |
 | Countdown timers not updating | Refresh page, check Tampermonkey script status | 倒计时未更新 | 刷新页面，检查Tampermonkey脚本状态 |
@@ -193,6 +260,9 @@ A: Latest version is available on both [GreasyFork](https://greasyfork.org/zh-CN
 
 **Q: Does the script affect Blackboard's original functionality? | 脚本会影响Blackboard的原始功能吗？**  
 A: No, it only replaces one module display. All other Blackboard features remain unchanged. | 不会，它只替换一个模块显示。所有其他Blackboard功能保持不变。
+
+**Q: I can't find the Academic Materials module on my Blackboard page. | 我在Blackboard页面找不到Academic Materials模块。**  
+A: This module is not enabled by default. Click "Add Module" on your Blackboard homepage, find "Academic Materials" in the list, and click "Add". See the installation guide above for detailed steps with screenshots. | 此模块默认未启用。在Blackboard主页点击"Add Module"，在列表中找到"Academic Materials"并点击"Add"。详细步骤请参考上方安装指南的截图说明。
 
 **Q: Does the script work properly on Firefox? | 脚本在火狐浏览器上能正常工作吗？**  
 A: Yes, version 1.3.3+ includes enhanced Firefox compatibility with DOMException fixes and cross-origin request support. | 是的，版本 1.3.3+ 包含增强的火狐兼容性，修复了 DOMException 错误和跨域请求支持。
